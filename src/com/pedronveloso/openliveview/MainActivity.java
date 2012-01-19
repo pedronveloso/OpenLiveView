@@ -13,6 +13,8 @@ import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pedronveloso.openliveview.protocol.VibrateRequest;
+
 public class MainActivity extends Activity
 {
     private static String LOG_TAG = "OpenLiveView";
@@ -55,14 +57,17 @@ public class MainActivity extends Activity
             // Loop through paired devices
             for (BluetoothDevice device : pairedDevices) {
                 // Add the name and address to an array adapter to show in a ListView
-                addToOuput(device.getName() + " : " + device.getAddress());
-                myLiveView = device;
+                if ("LiveView".equals(device.getName())) {
+                	addToOuput(device.getName() + " : " + device.getAddress());
+                	myLiveView = device;
+                }
             }
         }
 
-        ConnectThread con = new ConnectThread(myLiveView);
-        con.run();
-
+        if (myLiveView != null) {
+        	ConnectThread con = new ConnectThread(myLiveView);
+        	con.run();
+        }
 
     }
 
@@ -139,7 +144,10 @@ public class MainActivity extends Activity
 
 
         try {
-            tmpOut.write(0x421010);
+        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	tmpOut.write(request.serialize());
+        	tmpOut.flush();
+            //tmpOut.write(0x421010);
         } catch (IOException e) {
             e.printStackTrace();
             addToOuput("FAIL TO WRITE");
