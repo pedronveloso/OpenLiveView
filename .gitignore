@@ -4,3 +4,8 @@
 /out/
 /bin/
 /ant.properties
+/.classpath
+/.metadata
+/.settings
+/default.properties
+/.project
