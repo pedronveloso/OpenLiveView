@@ -29,7 +29,7 @@ public abstract class Request {
 			writer.writeInt(getPayloadSize());
 			WritePayload(writer);
 			writer.flush();
-			data.toByteArray();
+			result = data.toByteArray();
 			data.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

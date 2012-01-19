@@ -125,7 +125,15 @@ public class MainActivity extends Activity
         }
     }
 
-
+    public static String getHexString(byte[] b) {
+    	String result = "";
+    	for (int i=0; i < b.length; i++) {
+    		result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+    	}
+    	return result;
+	}
+    
+    
     public void manageConnectedSocket(BluetoothSocket mmSocket){
         addToOuput("reached manageConnectSocket");
         DataInputStream tmpIn = null;
@@ -145,7 +153,9 @@ public class MainActivity extends Activity
 
         try {
         	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
-        	tmpOut.write(request.serialize());
+        	byte[] msg = request.serialize();
+        	addToOuput("Sending Commands: "+getHexString(msg));
+        	tmpOut.write(msg);
         	tmpOut.flush();
             //tmpOut.write(0x421010);
         } catch (IOException e) {
