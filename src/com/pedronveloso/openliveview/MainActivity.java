@@ -3,9 +3,7 @@ package com.pedronveloso.openliveview;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -14,6 +12,8 @@ import java.io.*;
 import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
+
+import com.pedronveloso.openliveview.protocol.VibrateRequest;
 
 public class MainActivity extends Activity
 {
@@ -57,14 +57,17 @@ public class MainActivity extends Activity
             // Loop through paired devices
             for (BluetoothDevice device : pairedDevices) {
                 // Add the name and address to an array adapter to show in a ListView
-                addToOuput(device.getName() + " : " + device.getAddress());
-                myLiveView = device;
+                if ("LiveView".equals(device.getName())) {
+                	addToOuput(device.getName() + " : " + device.getAddress());
+                	myLiveView = device;
+                }
             }
         }
 
-        ConnectThread con = new ConnectThread(myLiveView);
-        con.run();
-
+        if (myLiveView != null) {
+        	ConnectThread con = new ConnectThread(myLiveView);
+        	con.run();
+        }
 
     }
 
@@ -122,7 +125,15 @@ public class MainActivity extends Activity
         }
     }
 
-
+    public static String getHexString(byte[] b) {
+    	String result = "";
+        for (byte aB : b) {
+            result += Integer.toString((aB & 0xff) + 0x100, 16).substring(1);
+        }
+    	return result;
+	}
+    
+    
     public void manageConnectedSocket(BluetoothSocket mmSocket){
         addToOuput("reached manageConnectSocket");
         DataInputStream tmpIn = null;
@@ -141,7 +152,11 @@ public class MainActivity extends Activity
 
 
         try {
-            tmpOut.write(0x421010);
+        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	byte[] msg = request.serialize();
+        	addToOuput("Sending Commands: "+getHexString(msg));
+        	tmpOut.write(msg);
+        	tmpOut.flush();
         } catch (IOException e) {
             e.printStackTrace();
             addToOuput("FAIL TO WRITE");
