@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pedronveloso.openliveview.protocol.LEDRequest;
+import com.pedronveloso.openliveview.protocol.LEDResponse;
 import com.pedronveloso.openliveview.protocol.Response;
 import com.pedronveloso.openliveview.protocol.VibrateRequest;
 import com.pedronveloso.openliveview.protocol.VibrateResponse;
@@ -151,13 +154,9 @@ public class MainActivity extends Activity
             e.printStackTrace();
         }
 
-
-        byte[] buffer = new byte[1024];  // buffer store for the stream
-        int bytes; // bytes returned from read()
-
-
         try {
-        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	//VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
         	request.Write(tmpOut);
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,6 +168,8 @@ public class MainActivity extends Activity
                 Response resp = Response.parse(tmpIn);
                 if (resp instanceof VibrateResponse)
                 	addToOuput("Vibrate:" + ((VibrateResponse)resp).getOk());
+                else if (resp instanceof LEDResponse)
+                	addToOuput("LED: "+((LEDResponse)resp).getOk());
                 else
                 	addToOuput("Unknow Response!");
                 break;

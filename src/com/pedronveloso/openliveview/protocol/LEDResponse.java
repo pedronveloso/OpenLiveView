@@ -3,7 +3,7 @@ package com.pedronveloso.openliveview.protocol;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class VibrateResponse extends Response {
+public class LEDResponse extends Response {
 
 	private boolean mOk = false;
 	
@@ -15,4 +15,5 @@ public class VibrateResponse extends Response {
 	public boolean getOk() {
 		return mOk;
 	}
+
 }
