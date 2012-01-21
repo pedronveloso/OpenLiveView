@@ -158,11 +158,7 @@ public class MainActivity extends Activity
 
         try {
         	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
-        	byte[] msg = request.serialize();
-        	addToOuput("Sending Commands: "+getHexString(msg, 0));
-        	tmpOut.write(msg);
-        	tmpOut.flush();
-            //tmpOut.write(0x421010);
+        	request.Write(tmpOut);
         } catch (IOException e) {
             e.printStackTrace();
             addToOuput("FAIL TO WRITE");
@@ -170,14 +166,11 @@ public class MainActivity extends Activity
 
         while (true) {
             try {
-                // Read from the InputStream
-                bytes = tmpIn.read(buffer);
-                
-                Response resp = Response.parse(buffer);
+                Response resp = Response.parse(tmpIn);
                 if (resp instanceof VibrateResponse)
-                	addToOuput("Vibrate ok:" + ((VibrateResponse)resp).getOk());
+                	addToOuput("Vibrate:" + ((VibrateResponse)resp).getOk());
                 else
-                	addToOuput(getHexString(buffer, bytes));
+                	addToOuput("Unknow Response!");
                 break;
             } catch (IOException e) {
                 addToOuput("FAIL TO READ");
