@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class VibrateRequest extends Request {
-
+	
 	private short mDelay;
 	private short mDuration;
 	
@@ -16,7 +16,7 @@ public class VibrateRequest extends Request {
 
 	@Override
 	protected byte getMessageId() {
-		return 42;
+		return REQUEST_VIBRATE;
 	}
 
 	@Override

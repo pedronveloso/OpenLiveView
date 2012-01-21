@@ -11,6 +11,9 @@ public abstract class Request {
 	protected static final int SIZE_INT = 4;
 	
 	
+	public static final int REQUEST_VIBRATE = 42;
+	
+	
 	protected abstract byte getMessageId();
 	
 	protected abstract int getPayloadSize();

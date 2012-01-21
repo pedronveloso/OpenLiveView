@@ -13,7 +13,9 @@ import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pedronveloso.openliveview.protocol.Response;
 import com.pedronveloso.openliveview.protocol.VibrateRequest;
+import com.pedronveloso.openliveview.protocol.VibrateResponse;
 
 public class MainActivity extends Activity
 {
@@ -23,7 +25,8 @@ public class MainActivity extends Activity
     TextView output;
     
     public void addToOuput(String line){
-        output.setText(output.getText()+"\n"+line);
+    	Log.d(LOG_TAG, line);
+		output.setText(output.getText()+"\n"+line);		
     }
     
     /** Called when the activity is first created. */
@@ -125,9 +128,11 @@ public class MainActivity extends Activity
         }
     }
 
-    public static String getHexString(byte[] b) {
+    public static String getHexString(byte[] b, int count) {
     	String result = "";
-    	for (int i=0; i < b.length; i++) {
+    	if (count == 0)
+    		count = b.length;
+    	for (int i=0; i < count; i++) {
     		result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
     	}
     	return result;
@@ -154,7 +159,7 @@ public class MainActivity extends Activity
         try {
         	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
         	byte[] msg = request.serialize();
-        	addToOuput("Sending Commands: "+getHexString(msg));
+        	addToOuput("Sending Commands: "+getHexString(msg, 0));
         	tmpOut.write(msg);
         	tmpOut.flush();
             //tmpOut.write(0x421010);
@@ -167,8 +172,13 @@ public class MainActivity extends Activity
             try {
                 // Read from the InputStream
                 bytes = tmpIn.read(buffer);
-                // Send the obtained bytes to the UI Activity
-                addToOuput(Integer.toString(bytes));
+                
+                Response resp = Response.parse(buffer);
+                if (resp instanceof VibrateResponse)
+                	addToOuput("Vibrate ok:" + ((VibrateResponse)resp).getOk());
+                else
+                	addToOuput(getHexString(buffer, bytes));
+                break;
             } catch (IOException e) {
                 addToOuput("FAIL TO READ");
                 addToOuput(e.getMessage());
