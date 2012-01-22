@@ -13,7 +13,7 @@ import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
 
-import com.pedronveloso.openliveview.protocol.VibrateRequest;
+import com.pedronveloso.openliveview.protocol.*;
 
 public class MainActivity extends Activity
 {
@@ -22,8 +22,14 @@ public class MainActivity extends Activity
     BluetoothDevice myLiveView;
     TextView output;
     
-    public void addToOuput(String line){
-        output.setText(output.getText()+"\n"+line);
+    public void addToOutput(final String line){
+    	Log.d(LOG_TAG, line);
+    	runOnUiThread(new Runnable() {
+			
+			public void run() {
+				output.setText(output.getText()+"\n"+line);	
+			}
+		});
     }
     
     /** Called when the activity is first created. */
@@ -36,9 +42,9 @@ public class MainActivity extends Activity
         output = (TextView) findViewById(R.id.tv_output);
         
         if (ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN))
-            addToOuput("Current platform byte order is: BigEndian");
+            addToOutput("Current platform byte order is: BigEndian");
         else
-            addToOuput("Current platform byte order is: LittleEndian");
+            addToOutput("Current platform byte order is: LittleEndian");
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -58,7 +64,7 @@ public class MainActivity extends Activity
             for (BluetoothDevice device : pairedDevices) {
                 // Add the name and address to an array adapter to show in a ListView
                 if ("LiveView".equals(device.getName())) {
-                	addToOuput(device.getName() + " : " + device.getAddress());
+                	addToOutput(device.getName() + " : " + device.getAddress());
                 	myLiveView = device;
                 }
             }
@@ -66,7 +72,7 @@ public class MainActivity extends Activity
 
         if (myLiveView != null) {
         	ConnectThread con = new ConnectThread(myLiveView);
-        	con.run();
+        	con.start();
         }
 
     }
@@ -82,12 +88,13 @@ public class MainActivity extends Activity
             mmDevice = device;
 
             // Get a BluetoothSocket to connect with the given BluetoothDevice
-            try {
+            try {            	
                 // MY_UUID is the app's UUID string, also used by the server code
                 tmp = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+                addToOutput("Socket created");
             } catch (IOException e) {
                 e.printStackTrace();
-                addToOuput("Fail to create RFCOMM");
+                addToOutput("Fail to create RFCOMM");
             }
             mmSocket = tmp;
         }
@@ -100,12 +107,13 @@ public class MainActivity extends Activity
                 // Connect the device through the socket. This will block
                 // until it succeeds or throws an exception
                 mmSocket.connect();
+                addToOutput("Socket connected");
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and get out
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {
-                    addToOuput("close exception");
+                    addToOutput("close exception");
                 }
                 return;
             }
@@ -120,62 +128,75 @@ public class MainActivity extends Activity
                 mmSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                addToOuput("Fail on Cancel");
+                addToOutput("Fail on Cancel");
             }
         }
     }
 
-    public static String getHexString(byte[] b) {
+    public static String getHexString(byte[] b, int count) {
     	String result = "";
-        for (byte aB : b) {
-            result += Integer.toString((aB & 0xff) + 0x100, 16).substring(1);
-        }
+    	if (count == 0)
+    		count = b.length;
+    	for (int i=0; i < count; i++) {
+    		result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+    	}
     	return result;
 	}
     
     
     public void manageConnectedSocket(BluetoothSocket mmSocket){
-        addToOuput("reached manageConnectSocket");
+        addToOutput("reached manageConnectSocket");
         DataInputStream tmpIn = null;
         DataOutputStream tmpOut = null;
         try {
             tmpIn = new DataInputStream(mmSocket.getInputStream());
             tmpOut = new DataOutputStream(mmSocket.getOutputStream());
         } catch (IOException e) {
-            addToOuput("Failed to get In and/or Out stream(s)");
+            addToOutput("Failed to get In and/or Out stream(s)");
             e.printStackTrace();
         }
 
-
-        byte[] buffer = new byte[1024];  // buffer store for the stream
-        int bytes; // bytes returned from read()
-
-
         try {
-        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
-        	byte[] msg = request.serialize();
-        	addToOuput("Sending Commands: "+getHexString(msg));
-        	tmpOut.write(msg);
-        	tmpOut.flush();
+        	//VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	//LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
+        	ScreenPropertiesRequest request = new ScreenPropertiesRequest();
+        	request.Write(tmpOut);
         } catch (IOException e) {
             e.printStackTrace();
-            addToOuput("FAIL TO WRITE");
+            addToOutput("FAIL TO WRITE");
         }
 
         while (true) {
             try {
-                // Read from the InputStream
-                bytes = tmpIn.read(buffer);
-                // Send the obtained bytes to the UI Activity
-                addToOuput(Integer.toString(bytes));
+        		int msgId = tmpIn.read();
+        		if (msgId != -1) {
+        			Response resp = Response.parse((byte)msgId, tmpIn);
+        			
+        			if (resp instanceof LiveViewRequest) {
+        				// LiveView asks us to answer something!
+        				Request request = ((LiveViewRequest)resp).answer();
+        				request.Write(tmpOut);
+        			}
+        			
+        			
+        			
+	                if (resp instanceof VibrateResponse)
+	                	addToOutput("Vibrate:" + ((VibrateResponse)resp).getOk());
+	                else if (resp instanceof LEDResponse)
+	                	addToOutput("LED: "+((LEDResponse)resp).getOk());
+	                else if (resp instanceof ScreenPropertiesResponse)
+	                	addToOutput("Got Screen Infos :" + ((ScreenPropertiesResponse)resp).getWidth() + "x" + ((ScreenPropertiesResponse)resp).getHeight());
+	                else if (resp instanceof StandByRequest) 
+	                	addToOutput("New StandBy State: "+ ((StandByRequest)resp).getState());
+	                else
+	                	addToOutput("Unknown Response :" + msgId);
+            	}
             } catch (IOException e) {
-                addToOuput("FAIL TO READ");
-                addToOuput(e.getMessage());
+                addToOutput("FAIL TO READ");
+                addToOutput(e.getMessage());
                 break;
             }
         }
-
     }
-
 
 }
