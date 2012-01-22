@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Utils;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 

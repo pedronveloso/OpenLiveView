@@ -1,4 +1,4 @@
-package com.pedronveloso.openliveview;
+package com.pedronveloso.openliveview.activities;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -13,6 +13,8 @@ import java.nio.ByteOrder;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pedronveloso.openliveview.R;
+import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.protocol.*;
 
 public class MainActivity extends Activity
@@ -22,7 +24,7 @@ public class MainActivity extends Activity
     TextView output;
     
     public void addToOutput(final String line){
-    	Log.d(C.LOG_TAG, line);
+    	Log.d(Constants.LOG_TAG, line);
     	runOnUiThread(new Runnable() {
 			
 			public void run() {
@@ -47,12 +49,12 @@ public class MainActivity extends Activity
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            Log.e(C.LOG_TAG,"does not support bluetooth devices");
+            Log.e(Constants.LOG_TAG,"does not support bluetooth devices");
             finish();
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
-            Log.e(C.LOG_TAG, "bluetooth not enabled");
+            Log.e(Constants.LOG_TAG, "bluetooth not enabled");
             finish();
         }
 
@@ -146,9 +148,9 @@ public class MainActivity extends Activity
         }
 
         try {
-        	//VibrateRequest request = new VibrateRequest((short)1000, (short)500);
+        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
         	//LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
-        	ScreenPropertiesRequest request = new ScreenPropertiesRequest();
+        	//ScreenPropertiesRequest request = new ScreenPropertiesRequest();
         	request.Write(tmpOut);
         } catch (IOException e) {
             e.printStackTrace();

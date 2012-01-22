@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ public abstract class Request {
 	
 	public void Write(DataOutputStream stream) throws IOException {
 		stream.writeByte(getMessageId());
-		stream.writeByte(C.SIZE_INT);
+		stream.writeByte(Constants.SIZE_INT);
 		stream.writeInt(getPayloadSize());
 		WritePayload(stream);
 		stream.flush();

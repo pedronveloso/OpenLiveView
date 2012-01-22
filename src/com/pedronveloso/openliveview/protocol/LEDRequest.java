@@ -1,5 +1,8 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+import com.pedronveloso.openliveview.Utils.Utils;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -17,14 +20,14 @@ public class LEDRequest extends Request{
 	
 	@Override
 	protected byte getMessageId() {
-		return C.REQUEST_LED;
+		return Constants.REQUEST_LED;
 	}
 
 	@Override
 	protected int getPayloadSize() {
-		return C.SIZE_SHORT + // Color
-               C.SIZE_SHORT + // Delay
-               C.SIZE_SHORT;  // Duration
+		return Constants.SIZE_SHORT + // Color
+               Constants.SIZE_SHORT + // Delay
+               Constants.SIZE_SHORT;  // Duration
 	}
 
 	@Override
