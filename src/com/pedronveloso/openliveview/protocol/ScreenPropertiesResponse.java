@@ -14,8 +14,7 @@ public class ScreenPropertiesResponse extends Response {
 	private int mAnnounceWidth;
 	private int mAnnounceHeight;
 	private int mTextChunkSize;
-	private int mIdleTimer;
-	private int mStopByte;
+	private int mIdleTimer;	
 	private String mProtocolVersion;
 	
 	public int getWidth() {
@@ -58,10 +57,6 @@ public class ScreenPropertiesResponse extends Response {
 		return mIdleTimer;
 	}
 	
-	public int getStopByte() {
-		return mStopByte;
-	}
-	
 	public String getProtocolVersion() {
 		return mProtocolVersion;
 	}
@@ -79,8 +74,8 @@ public class ScreenPropertiesResponse extends Response {
 		mAnnounceHeight = input.readUnsignedByte();
 		mTextChunkSize = input.readUnsignedByte();
 		mIdleTimer = input.readUnsignedByte();
-		mStopByte = input.readUnsignedByte();
-		byte[] buffer = new byte[5];
+		int textLen = input.readUnsignedByte();
+		byte[] buffer = new byte[textLen];
 		input.read(buffer);
 		mProtocolVersion = Utils.getString(buffer);
 	}
