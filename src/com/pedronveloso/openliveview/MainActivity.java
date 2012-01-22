@@ -17,6 +17,8 @@ import java.util.UUID;
 import com.pedronveloso.openliveview.protocol.LEDRequest;
 import com.pedronveloso.openliveview.protocol.LEDResponse;
 import com.pedronveloso.openliveview.protocol.Response;
+import com.pedronveloso.openliveview.protocol.ScreenPropertiesRequest;
+import com.pedronveloso.openliveview.protocol.ScreenPropertiesResponse;
 import com.pedronveloso.openliveview.protocol.VibrateRequest;
 import com.pedronveloso.openliveview.protocol.VibrateResponse;
 
@@ -156,7 +158,8 @@ public class MainActivity extends Activity
 
         try {
         	//VibrateRequest request = new VibrateRequest((short)1000, (short)500);
-        	LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
+        	//LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
+        	ScreenPropertiesRequest request = new ScreenPropertiesRequest();
         	request.Write(tmpOut);
         } catch (IOException e) {
             e.printStackTrace();
@@ -170,8 +173,10 @@ public class MainActivity extends Activity
                 	addToOuput("Vibrate:" + ((VibrateResponse)resp).getOk());
                 else if (resp instanceof LEDResponse)
                 	addToOuput("LED: "+((LEDResponse)resp).getOk());
+                else if (resp instanceof ScreenPropertiesResponse)
+                	addToOuput("Got Screen Infos :" + ((ScreenPropertiesResponse)resp).getWidth() + "x" + ((ScreenPropertiesResponse)resp).getHeight());
                 else
-                	addToOuput("Unknow Response!");
+                	addToOuput("Unknown Response!");
                 break;
             } catch (IOException e) {
                 addToOuput("FAIL TO READ");

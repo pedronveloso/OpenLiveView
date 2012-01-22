@@ -28,6 +28,8 @@ public abstract class Response {
 				result = new VibrateResponse(); break;
 			case C.RESPONSE_LED:
 				result = new LEDResponse(); break;
+			case C.RESPONSE_SCREEN_PROPERTIES:
+				result = new ScreenPropertiesResponse(); break;
 		}
 		
 		if (result != null && payloadlength > 0) {
