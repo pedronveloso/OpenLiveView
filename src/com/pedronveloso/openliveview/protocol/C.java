@@ -14,13 +14,18 @@ public class C {
 	
 	public static final int SIZE_BYTE = 1;
 	public static final int SIZE_SHORT = 2;
-	public static final int SIZE_INT = 4;
+	public static final int SIZE_INT = 4;	
+	
+	public static final int STATE_AWAKE = 2;
+	public static final int STATE_CLOCK = 1;
+	public static final int STATE_SLEEP = 0;
 	
 	public static final byte REQUEST_SCREEN_PROPERTIES = 1;
 	public static final byte RESPONSE_SCREEN_PROPERTIES = 2;
+	public static final byte REQUEST_STANDBY = 7;
+	public static final byte RESPONSE_STANDBY = 8;
 	public static final byte REQUEST_LED = 40;
 	public static final byte RESPONSE_LED = 41;
 	public static final byte REQUEST_VIBRATE = 42;
 	public static final byte RESPONSE_VIBRATE = 43;
-	
 }

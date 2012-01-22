@@ -7,9 +7,8 @@ public abstract class Response {
 		
 	protected abstract void readPayload(DataInputStream input, int payloadLength) throws IOException;
 	
-	public static Response parse(DataInputStream input) throws IOException {
+	public static Response parse(byte msgId, DataInputStream input) throws IOException {
 		Response result = null;
-		byte msgId = (byte)input.readByte();
 		int lengthSize = (byte)input.readByte();
 		int payloadlength = 0;
 		switch(lengthSize) {
@@ -30,6 +29,8 @@ public abstract class Response {
 				result = new LEDResponse(); break;
 			case C.RESPONSE_SCREEN_PROPERTIES:
 				result = new ScreenPropertiesResponse(); break;
+			case C.REQUEST_STANDBY:
+				result = new StandByRequest();
 		}
 		
 		if (result != null && payloadlength > 0) {
