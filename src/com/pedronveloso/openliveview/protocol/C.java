@@ -3,7 +3,10 @@ package com.pedronveloso.openliveview.protocol;
 /*
  * Contains Constants
  */
-public class C {
+public interface C {
+
+    public static String LOG_TAG = "OpenLiveView";
+
 	// For Information about the protocol see:
 	// https://github.com/BurntBrunch/LivelierView/blob/master/protocol.txt
 	

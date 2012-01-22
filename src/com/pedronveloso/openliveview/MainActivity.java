@@ -17,13 +17,12 @@ import com.pedronveloso.openliveview.protocol.*;
 
 public class MainActivity extends Activity
 {
-    private static String LOG_TAG = "OpenLiveView";
     BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice myLiveView;
     TextView output;
     
     public void addToOutput(final String line){
-    	Log.d(LOG_TAG, line);
+    	Log.d(C.LOG_TAG, line);
     	runOnUiThread(new Runnable() {
 			
 			public void run() {
@@ -48,12 +47,12 @@ public class MainActivity extends Activity
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            Log.e(LOG_TAG,"does not support bluetooth devices");
+            Log.e(C.LOG_TAG,"does not support bluetooth devices");
             finish();
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
-            Log.e(LOG_TAG, "bluetooth not enabled");
+            Log.e(C.LOG_TAG, "bluetooth not enabled");
             finish();
         }
 
@@ -132,16 +131,6 @@ public class MainActivity extends Activity
             }
         }
     }
-
-    public static String getHexString(byte[] b, int count) {
-    	String result = "";
-    	if (count == 0)
-    		count = b.length;
-    	for (int i=0; i < count; i++) {
-    		result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
-    	}
-    	return result;
-	}
     
     
     public void manageConnectedSocket(BluetoothSocket mmSocket){
