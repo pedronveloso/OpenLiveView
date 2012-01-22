@@ -91,7 +91,7 @@ public class MainActivity extends Activity
             // Get a BluetoothSocket to connect with the given BluetoothDevice
             try {            	
                 // MY_UUID is the app's UUID string, also used by the server code
-                tmp = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+                tmp = device.createRfcommSocketToServiceRecord(UUID.fromString(Constants.LIVEVIEW_UUID));
                 addToOutput("Socket created");
             } catch (IOException e) {
                 e.printStackTrace();
