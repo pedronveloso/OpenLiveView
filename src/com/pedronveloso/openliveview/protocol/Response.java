@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -12,24 +14,24 @@ public abstract class Response {
 		int lengthSize = (byte)input.readByte();
 		int payloadlength = 0;
 		switch(lengthSize) {
-			case C.SIZE_BYTE:
+			case Constants.SIZE_BYTE:
 				payloadlength = input.readByte(); break;
-			case C.SIZE_SHORT:
+			case Constants.SIZE_SHORT:
 				payloadlength = input.readShort(); break;
-			case C.SIZE_INT:
+			case Constants.SIZE_INT:
 				payloadlength = input.readInt(); break;
 			default:
 				return null; // Unknown Datatype!
 		}
 		
 		switch(msgId) {
-			case C.RESPONSE_VIBRATE:
+			case Constants.RESPONSE_VIBRATE:
 				result = new VibrateResponse(); break;
-			case C.RESPONSE_LED:
+			case Constants.RESPONSE_LED:
 				result = new LEDResponse(); break;
-			case C.RESPONSE_SCREEN_PROPERTIES:
+			case Constants.RESPONSE_SCREEN_PROPERTIES:
 				result = new ScreenPropertiesResponse(); break;
-			case C.REQUEST_STANDBY:
+			case Constants.REQUEST_STANDBY:
 				result = new StandByRequest();
 		}
 		

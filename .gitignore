@@ -4,6 +4,9 @@
 /out/
 /bin/
 /ant.properties
+/OpenLiveView.iml
+/local.properties
+/proguard.cfg
 /.classpath
 /.metadata
 /.settings

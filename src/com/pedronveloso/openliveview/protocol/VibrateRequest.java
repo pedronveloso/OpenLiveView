@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -16,13 +18,13 @@ public class VibrateRequest extends Request {
 
 	@Override
 	protected byte getMessageId() {
-		return C.REQUEST_VIBRATE;
+		return Constants.REQUEST_VIBRATE;
 	}
 
 	@Override
 	protected int getPayloadSize() {
-		return C.SIZE_SHORT  // Delay 
-		     + C.SIZE_SHORT; // Duration
+		return Constants.SIZE_SHORT  // Delay
+		     + Constants.SIZE_SHORT; // Duration
 	}
 
 	@Override

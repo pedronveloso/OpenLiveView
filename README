@@ -1,0 +1,22 @@
+This project's goal is to become a complete open source replacement of the LiveView official application, and even extend its original capabilities at some point.
+
+WHAT WORKS:
+     * Connecting to the LiveView device via Bluetooth
+     * Very raw handling of the basic protocol stack: Vibrate, Led, StandBy, Screen Properties
+
+WHAT REMAINS TO BE DONE:
+    * Better connection handling, PNGs NDK lib, stack of commands, menus, plugins support, YOU NAME IT ...
+
+CREDITS
+
+This projects initial inspiration was this thread here on XDA: http://forum.xda-developers.com/showthread.php?t=1422106
+
+This project is maintained by:
+
+* Pedro Veloso (pedronveloso)
+* boombuler
+
+The following people's work also contributed indirectly to the project:
+
+* archivator
+* x942

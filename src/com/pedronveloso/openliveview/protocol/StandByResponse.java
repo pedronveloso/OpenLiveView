@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -7,7 +9,7 @@ public class StandByResponse extends Request {
 
 	@Override
 	protected byte getMessageId() {
-		return C.RESPONSE_STANDBY;
+		return Constants.RESPONSE_STANDBY;
 	}
 
 	@Override
