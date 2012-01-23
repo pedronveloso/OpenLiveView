@@ -2,13 +2,15 @@ package com.pedronveloso.openliveview.protocol;
 
 import java.io.UnsupportedEncodingException;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import android.graphics.Color;
 
 public class Utils {
 
 	public static String getString(byte[] bytes) {
 		try {
-			return new String(bytes, C.STRING_ENCODING);
+			return new String(bytes, Constants.STRING_ENCODING);
 		} catch (UnsupportedEncodingException e) {			
 			e.printStackTrace();
 			return "";
@@ -17,7 +19,7 @@ public class Utils {
 	
 	public static byte[] prepareString(String string) {
 		try {
-			return string.getBytes(C.STRING_ENCODING);
+			return string.getBytes(Constants.STRING_ENCODING);
 		} catch (UnsupportedEncodingException e) {			
 			e.printStackTrace();
 			return new byte[0];
