@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.pedronveloso.openliveview.R;
+import com.pedronveloso.openliveview.Utils.CommandResult;
 import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.protocol.*;
 
@@ -21,7 +23,9 @@ public class MainActivity extends Activity
 {
     BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice myLiveView;
+    private int commandID = 0; //increments with each sent command
     TextView output;
+    private BluetoothSocket mmSocket;
     
     public void addToOutput(final String line){
     	Log.d(Constants.LOG_TAG, line);
@@ -79,17 +83,14 @@ public class MainActivity extends Activity
     }
 
     private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
 
         public ConnectThread(BluetoothDevice device) {
             // Use a temporary object that is later assigned to mmSocket,
             // because mmSocket is final
             BluetoothSocket tmp = null;
-            mmDevice = device;
 
             // Get a BluetoothSocket to connect with the given BluetoothDevice
-            try {            	
+            try {
                 // MY_UUID is the app's UUID string, also used by the server code
                 tmp = device.createRfcommSocketToServiceRecord(UUID.fromString(Constants.LIVEVIEW_UUID));
                 addToOutput("Socket created");
@@ -111,6 +112,7 @@ public class MainActivity extends Activity
                 addToOutput("Socket connected");
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and get out
+				addToOutput("Failed to connect");
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {
@@ -120,7 +122,13 @@ public class MainActivity extends Activity
             }
 
             // Do work to manage the connection (in a separate thread)
-            manageConnectedSocket(mmSocket);
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+                    new SendCommand().execute((int) Constants.REQUEST_VIBRATE);
+                }
+            });
+            //manageConnectedSocket(mmSocket);
         }
 
         /** Will cancel an in-progress connection, and close the socket */
@@ -133,59 +141,81 @@ public class MainActivity extends Activity
             }
         }
     }
-    
-    
-    public void manageConnectedSocket(BluetoothSocket mmSocket){
-        addToOutput("reached manageConnectSocket");
-        DataInputStream tmpIn = null;
-        DataOutputStream tmpOut = null;
-        try {
-            tmpIn = new DataInputStream(mmSocket.getInputStream());
-            tmpOut = new DataOutputStream(mmSocket.getOutputStream());
-        } catch (IOException e) {
-            addToOutput("Failed to get In and/or Out stream(s)");
-            e.printStackTrace();
-        }
 
-        try {
-        	VibrateRequest request = new VibrateRequest((short)1000, (short)500);
-        	//LEDRequest request = new LEDRequest(Color.YELLOW, (short)100, (short)5000);
-        	//ScreenPropertiesRequest request = new ScreenPropertiesRequest();
-        	request.Write(tmpOut);
-        } catch (IOException e) {
-            e.printStackTrace();
-            addToOutput("FAIL TO WRITE");
-        }
 
-        while (true) {
+    //
+    // AsyncTasks, Threads and stuff like that
+    //
+
+    /**
+     * AsyncTask that send a command in a non-blocking UI call, and returns
+     */
+    private class SendCommand extends AsyncTask<Integer,Integer, CommandResult> {
+
+        @Override
+        protected CommandResult doInBackground(Integer... args) {
+            int thisCommandID = commandID;
+            commandID++;
+
+            //get output stream
+            DataOutputStream tmpOut;
             try {
-        		int msgId = tmpIn.read();
-        		if (msgId != -1) {
-        			Response resp = Response.parse((byte)msgId, tmpIn);
-        			
-        			if (resp instanceof LiveViewRequest) {
-        				// LiveView asks us to answer something!
-        				Request request = ((LiveViewRequest)resp).answer();
-        				request.Write(tmpOut);
-        			}
-        			
-        			
-        			
-	                if (resp instanceof VibrateResponse)
-	                	addToOutput("Vibrate:" + ((VibrateResponse)resp).getOk());
-	                else if (resp instanceof LEDResponse)
-	                	addToOutput("LED: "+((LEDResponse)resp).getOk());
-	                else if (resp instanceof ScreenPropertiesResponse)
-	                	addToOutput("Got Screen Infos :" + ((ScreenPropertiesResponse)resp).getWidth() + "x" + ((ScreenPropertiesResponse)resp).getHeight());
-	                else if (resp instanceof StandByRequest) 
-	                	addToOutput("New StandBy State: "+ ((StandByRequest)resp).getState());
-	                else
-	                	addToOutput("Unknown Response :" + msgId);
-            	}
+                tmpOut = new DataOutputStream(mmSocket.getOutputStream());
             } catch (IOException e) {
-                addToOutput("FAIL TO READ");
-                addToOutput(e.getMessage());
-                break;
+                addToOutput("Failed to get Output stream");
+                e.printStackTrace();
+                return new CommandResult(Constants.SC_FAIL_IO_STREAM,thisCommandID);
+            }
+
+            //send command to device
+            try{
+                switch (args[0]){
+                    case (int) Constants.REQUEST_SCREEN_PROPERTIES:
+                        Log.d(Constants.LOG_TAG,"Will try screen properties request");
+                        ScreenPropertiesRequest screen_request = new ScreenPropertiesRequest();
+                        screen_request.Write(tmpOut);
+                        break;
+                    case (int) Constants.REQUEST_VIBRATE:
+                        VibrateRequest vibrate_request = new VibrateRequest((short)1000, (short)500);
+                        vibrate_request.Write(tmpOut);
+                        break;
+                    default:
+                        return new CommandResult(Constants.SC_FAIL_UNRECOGNIZED_COMMAND,thisCommandID);
+                }
+
+            }catch (IOException e){
+                addToOutput("Failed to get Output stream");
+                e.printStackTrace();
+                return new CommandResult(Constants.SC_FAIL_IO_STREAM,thisCommandID);
+            }
+            return new CommandResult(Constants.SC_SUCCESS,thisCommandID);
+        }
+        
+        @Override
+        protected void onPostExecute(CommandResult commandResult){
+            if (commandResult.getCommandSuccessCode()==Constants.SC_SUCCESS) //command was sent with success
+            {
+                DataInputStream tmpIn = null;
+                byte[] buffer = new byte[1024];  // buffer store for the stream
+                try {
+                    tmpIn = new DataInputStream(mmSocket.getInputStream());
+                } catch (IOException e) {
+                    addToOutput("Failed to get Input stream");
+                    e.printStackTrace();
+                }
+                int bytes;
+                try {
+                    bytes = tmpIn.read(buffer);
+                    // Send the obtained bytes to the UI Activity
+                    addToOutput(Integer.toString(bytes));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    addToOutput("FAILED to read input from cmd ID: " + commandResult.getCommandID());
+                }
+            }
+            else
+            {
+                addToOutput("FAILED! Reason: "+commandResult.getCommandSuccessCode());
             }
         }
     }

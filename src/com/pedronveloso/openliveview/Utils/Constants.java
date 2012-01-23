@@ -10,7 +10,7 @@ public interface Constants {
     public static int SC_SUCCESS = 1;
     public static int SC_FAIL_IO = 2; //failed because of a regular IO Exception
     public static int SC_FAIL_IO_STREAM = 3; //failed because of IO Exception when declaring the Stream
-    public static int SC_FAIL_UNRECONIZED_COMMAND = 4; //failed the number of the given command is unrecognized
+    public static int SC_FAIL_UNRECOGNIZED_COMMAND = 4; //failed the identifier of the given command is unrecognized
 
 
 
