@@ -6,7 +6,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 public abstract class Response {
-		
+	
+	private byte mMessageId;
+	
 	protected abstract void readPayload(DataInputStream input, int payloadLength) throws IOException;
 	
 	public static Response parse(byte msgId, DataInputStream input) throws IOException {
@@ -39,9 +41,18 @@ public abstract class Response {
 				result = new SWVersionResponse();
 		}
 		
-		if (result != null && payloadlength > 0) {
-			result.readPayload(input, payloadlength);
+		if (result != null) {
+			result.mMessageId = msgId;
+			if (payloadlength > 0) {
+				result.readPayload(input, payloadlength);
+			}
 		}
 		return result;
 	}
+	
+	public byte getMsgId() {
+		return mMessageId;
+	}
+
+	public abstract boolean shouldSendAck();
 }

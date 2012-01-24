@@ -15,4 +15,8 @@ public class DateTimeRequest extends LiveViewRequest {
 			throws IOException {
 	}
 
+	@Override
+	public boolean shouldSendAck() {
+		return true;
+	}
 }

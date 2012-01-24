@@ -1,7 +1,6 @@
 package com.pedronveloso.openliveview.protocol;
 
 import com.pedronveloso.openliveview.Utils.Constants;
-import com.pedronveloso.openliveview.Utils.Utils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

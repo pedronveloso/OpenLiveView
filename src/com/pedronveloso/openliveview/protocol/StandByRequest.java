@@ -22,4 +22,8 @@ public class StandByRequest extends LiveViewRequest {
 		mState = input.readUnsignedByte();
 	}
 
+	@Override
+	public boolean shouldSendAck() {
+		return true;
+	}
 }

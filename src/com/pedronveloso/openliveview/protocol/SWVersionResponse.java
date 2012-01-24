@@ -1,7 +1,5 @@
 package com.pedronveloso.openliveview.protocol;
 
-import com.pedronveloso.openliveview.Utils.Constants;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -20,4 +18,8 @@ public class SWVersionResponse extends Response {
 		return mVersion;
 	}
 
+	@Override
+	public boolean shouldSendAck() {
+		return true;
+	}
 }

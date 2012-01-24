@@ -40,6 +40,7 @@ public interface Constants {
     public static final byte RESPONSE_LED = 41;
     public static final byte REQUEST_VIBRATE = 42;
     public static final byte RESPONSE_VIBRATE = 43;
+    public static final byte RESPONSE_ACK = 44;
 	public static final byte REQUEST_SW_VERSION = 68;
 	public static final byte RESPONSE_SW_VERSION = 69;
 }

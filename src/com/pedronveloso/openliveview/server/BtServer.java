@@ -103,6 +103,11 @@ public class BtServer {
 	        		if (msgId != -1) {
 	        			final Response resp = Response.parse((byte)msgId, mInput);
 	        			
+	        			if (resp.shouldSendAck()) {
+	        				AckMessage ack = new AckMessage(resp.getMsgId());
+	        				write(ack);
+	        			}
+	        			
 	        			if (resp instanceof LiveViewRequest) {
 	        				// LiveView asks us to answer something!
 	        				Request request = ((LiveViewRequest)resp).answer();
