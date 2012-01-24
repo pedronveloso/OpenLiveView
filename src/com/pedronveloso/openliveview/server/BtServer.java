@@ -42,8 +42,6 @@ public class BtServer {
 		mThread = null;
 		if (mCallback != null)
 			mCallback.isReadyChanged(isReady());
-		if (t != null && t.isAlive())
-			t.stop();
 		if (mSocket != null) {
 			try {
 				mSocket.close();
@@ -98,7 +96,7 @@ public class BtServer {
 				}
 			});
 			
-			while(true) {
+			while(mThread == this) {
 				try {
 	        		int msgId = mInput.read();
 	        		if (msgId != -1) {
