@@ -25,7 +25,6 @@ public class MainActivity extends Activity
     BluetoothAdapter mBluetoothAdapter;
     TextView output;
     Button btnVibrate;
-    BtServer mServer;
     
     public void addToOutput(final String line){
     	Log.d(Constants.LOG_TAG, line);
@@ -82,9 +81,9 @@ public class MainActivity extends Activity
         }
 
         if (liveView != null) {
-        	mServer = new BtServer(liveView);
-        	mServer.setCallback(this);
-        	mServer.start();        	        	
+        	BtServer.instance().setContext(this);
+        	BtServer.instance().setCallback(this);
+        	BtServer.instance().start(liveView);        	        	
         }
 
     }
@@ -109,14 +108,13 @@ public class MainActivity extends Activity
 
     @Override
     protected void onDestroy() {
-    	if (mServer != null)
-    		mServer.stop();
+    	BtServer.instance().stop();
     	super.onDestroy();
     }
 
 	public void onClick(View arg0) {
 		if (arg0.getId() == R.id.btnVibrate) {
-			mServer.write(new VibrateRequest((short)100, (short)500));
+			BtServer.instance().write(new VibrateRequest((short)100, (short)500));
 		}
 		
 	}

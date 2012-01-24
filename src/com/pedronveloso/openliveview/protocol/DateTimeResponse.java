@@ -1,6 +1,12 @@
 package com.pedronveloso.openliveview.protocol;
 
+import android.app.Application;
+import android.content.Context;
+import android.text.format.DateFormat;
+import android.view.View;
+
 import com.pedronveloso.openliveview.Utils.Constants;
+import com.pedronveloso.openliveview.server.BtServer;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -28,7 +34,7 @@ public class DateTimeResponse extends Request {
 						 rightNow.get(Calendar.DST_OFFSET) + 
 						 new Date().getTime()) / 1000L);
 		writer.writeInt(time);
-		writer.writeByte(1); // <-- TODO 24h Format or not?
+		writer.writeByte(DateFormat.is24HourFormat(BtServer.instance().getContext()) ? 1 : 0);
 	}
 
 }

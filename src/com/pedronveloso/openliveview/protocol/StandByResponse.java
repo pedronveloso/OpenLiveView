@@ -14,11 +14,12 @@ public class StandByResponse extends Request {
 
 	@Override
 	protected int getPayloadSize() {
-		return 0;
+		return Constants.SIZE_BYTE;
 	}
 
 	@Override
 	protected void WritePayload(DataOutputStream writer) throws IOException {
+		writer.writeByte(Constants.MSG_OK);
 	}
 
 }

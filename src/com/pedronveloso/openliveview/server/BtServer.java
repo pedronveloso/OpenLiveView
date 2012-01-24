@@ -10,6 +10,7 @@ import com.pedronveloso.openliveview.protocol.*;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.os.Handler;
 
 public class BtServer {
@@ -26,13 +27,22 @@ public class BtServer {
 	private BluetoothSocket mSocket = null;
 	private DataOutputStream mOutput = null;
 	private ConnectedThread mThread = null;
+	private Context mContext = null;
+	private static BtServer mInstance = null;
 	
-	
-	public BtServer(BluetoothDevice liveView) {
-		mLiveView = liveView;
+	private BtServer() {
 	}
 	
-	public void start() {
+	public static BtServer instance() {
+		if (mInstance == null)
+			mInstance = new BtServer();
+		return mInstance;
+	}
+	
+	public void start(BluetoothDevice liveView) {
+		if (isReady())
+			stop();
+		mLiveView = liveView;
 		ConnectThread ct = new ConnectThread(mLiveView);
 		ct.start();
 	}
@@ -56,6 +66,14 @@ public class BtServer {
 	
 	public void setCallback(Callback callback) {
 		mCallback = callback;
+	}
+	
+	public void setContext(Context context) {
+		mContext = context;
+	}
+	
+	public Context getContext() {
+		return mContext;
 	}
 	
 	
