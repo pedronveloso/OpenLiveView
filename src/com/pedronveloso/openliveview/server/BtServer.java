@@ -87,6 +87,7 @@ public class BtServer {
 		
 		@Override
 		public void run() {
+			write(new ScreenPropertiesRequest());
 			mHandler.post(new Runnable() {
 				
 				public void run() {
@@ -105,7 +106,8 @@ public class BtServer {
 	        			if (resp instanceof LiveViewRequest) {
 	        				// LiveView asks us to answer something!
 	        				Request request = ((LiveViewRequest)resp).answer();
-	        				write(request);
+							if (request != null)
+								write(request);
 	        			}
 	        			mHandler.post(new Runnable() {
 							public void run() {

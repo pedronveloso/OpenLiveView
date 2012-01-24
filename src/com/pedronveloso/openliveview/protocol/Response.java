@@ -33,6 +33,10 @@ public abstract class Response {
 				result = new ScreenPropertiesResponse(); break;
 			case Constants.REQUEST_STANDBY:
 				result = new StandByRequest();
+			case Constants.REQUEST_DATE_TIME:
+				result = new DateTimeRequest();
+			case Constants.RESPONSE_SW_VERSION:
+				result = new SWVersionResponse();
 		}
 		
 		if (result != null && payloadlength > 0) {

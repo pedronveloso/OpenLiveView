@@ -97,7 +97,12 @@ public class MainActivity extends Activity
     }
 	
     public void handleResponse(Response aResponse) {
-		addToOutput("handling: "+ aResponse.getClass().getName());
+		if (aResponse instanceof ScreenPropertiesResponse) {
+			addToOutput("Protocol Version: "+((ScreenPropertiesResponse)aResponse).getProtocolVersion());
+		} else if (aResponse instanceof SWVersionResponse) {
+			addToOutput("SW Version: "+((SWVersionResponse)aResponse).getVersion());
+		} else
+			addToOutput("handling: "+ aResponse.getClass().getName());
 	}
 
     @Override

@@ -5,7 +5,7 @@ import com.pedronveloso.openliveview.Utils.Utils;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class ScreenPropertiesResponse extends Response {
+public class ScreenPropertiesResponse extends LiveViewRequest {
 
 	private int mWidth;
 	private int mHeight;
@@ -82,4 +82,9 @@ public class ScreenPropertiesResponse extends Response {
 		mProtocolVersion = Utils.getString(buffer);
 	}
 
+	@Override
+	public Request answer() {
+		return new SWVersionRequest();
+	}
+	
 }
