@@ -38,7 +38,6 @@ public class BtServer {
 	}
 	
 	public void stop() {
-		Thread t = mThread;
 		mThread = null;
 		if (mCallback != null)
 			mCallback.isReadyChanged(isReady());
@@ -93,7 +92,6 @@ public class BtServer {
 				public void run() {
 					if (mCallback != null)
 						mCallback.isReadyChanged(isReady());
-					
 				}
 			});
 			

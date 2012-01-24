@@ -86,9 +86,4 @@ public class ScreenPropertiesResponse extends LiveViewRequest {
 	public Request answer() {
 		return new SWVersionRequest();
 	}
-	
-	@Override
-	public boolean shouldSendAck() {
-		return true;
-	}
 }

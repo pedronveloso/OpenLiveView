@@ -17,9 +17,4 @@ public class SWVersionResponse extends Response {
 	public String getVersion() {
 		return mVersion;
 	}
-
-	@Override
-	public boolean shouldSendAck() {
-		return true;
-	}
 }

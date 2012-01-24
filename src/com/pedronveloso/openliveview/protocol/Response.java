@@ -54,5 +54,7 @@ public abstract class Response {
 		return mMessageId;
 	}
 
-	public abstract boolean shouldSendAck();
+	public boolean shouldSendAck() {
+		return true;
+	}
 }

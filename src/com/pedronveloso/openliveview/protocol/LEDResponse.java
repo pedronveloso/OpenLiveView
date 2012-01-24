@@ -17,9 +17,4 @@ public class LEDResponse extends Response {
 	public boolean getOk() {
 		return mOk;
 	}
-
-	@Override
-	public boolean shouldSendAck() {
-		return true;
-	}
 }

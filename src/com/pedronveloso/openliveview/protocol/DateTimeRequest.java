@@ -14,9 +14,4 @@ public class DateTimeRequest extends LiveViewRequest {
 	protected void readPayload(DataInputStream input, int payloadLength)
 			throws IOException {
 	}
-
-	@Override
-	public boolean shouldSendAck() {
-		return true;
-	}
 }
