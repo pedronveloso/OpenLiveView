@@ -13,6 +13,11 @@
 	        android:enabled="false"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"/>
+	    <Button android:id="@+id/btnLED" 
+	        android:text="LED"
+	        android:enabled="false"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
 	</LinearLayout>   
 	 
 <TextView

@@ -3,6 +3,7 @@ package com.pedronveloso.openliveview.activities;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ public class MainActivity extends Activity
     BluetoothAdapter mBluetoothAdapter;
     TextView output;
     Button btnVibrate;
+    Button btnLED;
     
     public void addToOutput(final String line){
     	Log.d(Constants.LOG_TAG, line);
@@ -49,6 +51,8 @@ public class MainActivity extends Activity
         
         btnVibrate = (Button)findViewById(R.id.btnVibrate);
         btnVibrate.setOnClickListener(this);
+        btnLED = (Button)findViewById(R.id.btnLED);
+        btnLED.setOnClickListener(this);
         
         if (ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN))
             addToOutput("Current platform byte order is: BigEndian");
@@ -92,6 +96,7 @@ public class MainActivity extends Activity
     	if (isReady)
     		mBluetoothAdapter.cancelDiscovery();
     	btnVibrate.setEnabled(isReady);
+    	btnLED.setEnabled(isReady);
     	addToOutput("IsReadyChanged: "+isReady);
     }
 	
@@ -113,8 +118,11 @@ public class MainActivity extends Activity
     }
 
 	public void onClick(View arg0) {
-		if (arg0.getId() == R.id.btnVibrate) {
-			BtServer.instance().write(new VibrateRequest((short)100, (short)500));
+		int id = arg0.getId();
+		if (id == R.id.btnVibrate) {
+			BtServer.instance().write(new VibrateRequest((short)0, (short)500));
+		} else if (id == R.id.btnLED) {
+			BtServer.instance().write(new LEDRequest(Color.RED, (short)0, (short)500));
 		}
 		
 	}

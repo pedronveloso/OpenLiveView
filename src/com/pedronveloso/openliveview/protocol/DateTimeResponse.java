@@ -1,9 +1,6 @@
 package com.pedronveloso.openliveview.protocol;
 
-import android.app.Application;
-import android.content.Context;
 import android.text.format.DateFormat;
-import android.view.View;
 
 import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.server.BtServer;
