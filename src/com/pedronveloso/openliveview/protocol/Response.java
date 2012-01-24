@@ -34,11 +34,14 @@ public abstract class Response {
 			case Constants.RESPONSE_SCREEN_PROPERTIES:
 				result = new ScreenPropertiesResponse(); break;
 			case Constants.REQUEST_STANDBY:
-				result = new StandByRequest();
+				result = new StandByRequest(); break;
 			case Constants.REQUEST_DATE_TIME:
-				result = new DateTimeRequest();
+				result = new DateTimeRequest(); break;
 			case Constants.RESPONSE_SW_VERSION:
-				result = new SWVersionResponse();
+				result = new SWVersionResponse(); break;
+				
+			default:
+				result = new UnknownResponse();
 		}
 		
 		if (result != null) {
