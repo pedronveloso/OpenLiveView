@@ -139,7 +139,8 @@ public class BtServer {
 	            } catch (IOException e) {
         			mHandler.post(new Runnable() {
 						public void run() {
-							BtServer.this.stop();
+							if (mThread == this)
+								BtServer.this.stop();
 						}
         			});
 	                break;
