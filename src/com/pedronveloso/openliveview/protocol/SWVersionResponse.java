@@ -3,7 +3,7 @@ package com.pedronveloso.openliveview.protocol;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class SWVersionResponse extends Response {
+public class SWVersionResponse extends LiveViewRequest {
 
 	private String mVersion;
 	
@@ -16,5 +16,10 @@ public class SWVersionResponse extends Response {
 
 	public String getVersion() {
 		return mVersion;
+	}
+
+	@Override
+	public Request answer() {
+		return new MenuItemCountRequest(1);
 	}
 }

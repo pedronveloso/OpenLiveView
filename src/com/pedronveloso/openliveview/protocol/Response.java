@@ -39,7 +39,10 @@ public abstract class Response {
 				result = new DateTimeRequest(); break;
 			case Constants.RESPONSE_SW_VERSION:
 				result = new SWVersionResponse(); break;
-				
+			case Constants.RESPONSE_MENU_ITEM_COUNT:
+				result = new MenuItemCountResponse(); break;
+			case Constants.REQUEST_GET_ALL_MENU_ITEMS:
+				result = new GetAllMenuItemsRequest(); break;
 			default:
 				result = new UnknownResponse();
 		}
