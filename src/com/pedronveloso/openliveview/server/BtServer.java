@@ -24,26 +24,25 @@ public class BtServer {
 	private Handler mHandler = new Handler();
 	
 	private Callback mCallback = null;
-	private BluetoothDevice mLiveView;
-	private BluetoothSocket mSocket = null;
+    private BluetoothSocket mSocket = null;
 	private DataOutputStream mOutput = null;
 	private ConnectedThread mThread = null;
 	private Context mContext = null;
-	private static BtServer mInstance = null;
+	private static BtServer sInstance = null;
 	
 	private BtServer() {
 	}
 	
 	public static BtServer instance() {
-		if (mInstance == null)
-			mInstance = new BtServer();
-		return mInstance;
+		if (sInstance == null)
+            sInstance = new BtServer();
+		return sInstance;
 	}
 	
 	public void start(BluetoothDevice liveView) {
 		if (isReady())
 			stop();
-		mLiveView = liveView;
+        BluetoothDevice mLiveView = liveView;
 		ConnectThread ct = new ConnectThread(mLiveView);
 		ct.start();
 	}
