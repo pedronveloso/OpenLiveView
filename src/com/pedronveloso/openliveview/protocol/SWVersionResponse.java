@@ -3,6 +3,8 @@ package com.pedronveloso.openliveview.protocol;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import com.pedronveloso.openliveview.Utils.Utils;
+
 public class SWVersionResponse extends LiveViewRequest {
 
 	private String mVersion;

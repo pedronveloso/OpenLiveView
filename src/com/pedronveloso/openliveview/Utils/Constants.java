@@ -39,6 +39,7 @@ public interface Constants {
     public static final byte RESPONSE_STANDBY = 8;
     public static final byte REQUEST_MENU_ITEM_COUNT = 23;
     public static final byte RESPONSE_MENU_ITEM_COUNT = 24;
+    public static final byte RESPONSE_MENU_GET_ITEM = 26;
     public static final byte REQUEST_GET_ALL_MENU_ITEMS = 35;
 	public static final byte REQUEST_DATE_TIME = 38;
 	public static final byte RESPONSE_DATE_TIME = 39;

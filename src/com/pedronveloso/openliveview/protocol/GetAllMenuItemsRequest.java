@@ -7,8 +7,7 @@ public class GetAllMenuItemsRequest extends LiveViewRequest {
 
 	@Override
 	public Request answer() {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetMenuIconResponse();
 	}
 
 	@Override
