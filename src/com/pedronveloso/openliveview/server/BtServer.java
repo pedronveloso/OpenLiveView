@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import android.util.Log;
 import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.protocol.*;
 
@@ -144,7 +145,11 @@ public class BtServer {
 						}
         			});
 	                break;
-	            }
+	            } catch (NullPointerException nullE){
+                    // ignore?
+                    Log.e(Constants.LOG_TAG,"Null exception when trying to read response: "+nullE.getMessage());
+                    nullE.printStackTrace();
+                }
 			}
 		}
 	}
