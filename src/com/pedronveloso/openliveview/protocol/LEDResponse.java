@@ -17,5 +17,4 @@ public class LEDResponse extends Response {
 	public boolean getOk() {
 		return mOk;
 	}
-
 }

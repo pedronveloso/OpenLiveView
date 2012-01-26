@@ -1,15 +1,21 @@
 package com.pedronveloso.openliveview.protocol;
 
-import com.pedronveloso.openliveview.Utils.Constants;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class StandByResponse extends Request {
+import com.pedronveloso.openliveview.Utils.Constants;
 
+public class MenuItemCountRequest extends Request {
+
+	private int mItemCount;
+	
+	public MenuItemCountRequest(int itemCount) {
+		mItemCount = itemCount;
+	}
+	
 	@Override
 	protected byte getMessageId() {
-		return Constants.RESPONSE_STANDBY;
+		return Constants.REQUEST_MENU_ITEM_COUNT;
 	}
 
 	@Override
@@ -19,7 +25,7 @@ public class StandByResponse extends Request {
 
 	@Override
 	protected void WritePayload(DataOutputStream writer) throws IOException {
-		writer.writeByte(Constants.MSG_OK);
+		writer.write(mItemCount);
 	}
 
 }

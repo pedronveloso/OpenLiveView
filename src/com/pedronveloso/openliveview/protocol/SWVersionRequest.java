@@ -5,16 +5,19 @@ import com.pedronveloso.openliveview.Utils.Constants;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class StandByResponse extends Request {
+public class SWVersionRequest extends Request{
 
+	public SWVersionRequest() {
+	}
+	
 	@Override
 	protected byte getMessageId() {
-		return Constants.RESPONSE_STANDBY;
+		return Constants.REQUEST_SW_VERSION;
 	}
 
 	@Override
 	protected int getPayloadSize() {
-		return Constants.SIZE_BYTE;
+		return Constants.SIZE_BYTE; // MSG_OK
 	}
 
 	@Override

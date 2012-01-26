@@ -18,7 +18,7 @@ public interface Constants {
     // https://github.com/BurntBrunch/LivelierView/blob/master/protocol.txt
 
     public static final String STRING_ENCODING = "iso-8859-1";
-    public static final byte[] PROTOCOL_VERSION = Utils.prepareString("0.0.3");
+    public static final byte[] PROTOCOL_VERSION = Utils.prepareString("0.0.6");
 
     public static final int MSG_OK = 0;
 
@@ -34,8 +34,16 @@ public interface Constants {
     public static final byte RESPONSE_SCREEN_PROPERTIES = 2;
     public static final byte REQUEST_STANDBY = 7;
     public static final byte RESPONSE_STANDBY = 8;
+    public static final byte REQUEST_MENU_ITEM_COUNT = 23;
+    public static final byte RESPONSE_MENU_ITEM_COUNT = 24;
+    public static final byte REQUEST_GET_ALL_MENU_ITEMS = 35;
+	public static final byte REQUEST_DATE_TIME = 38;
+	public static final byte RESPONSE_DATE_TIME = 39;
     public static final byte REQUEST_LED = 40;
     public static final byte RESPONSE_LED = 41;
     public static final byte REQUEST_VIBRATE = 42;
     public static final byte RESPONSE_VIBRATE = 43;
+    public static final byte RESPONSE_ACK = 44;
+	public static final byte REQUEST_SW_VERSION = 68;
+	public static final byte RESPONSE_SW_VERSION = 69;
 }

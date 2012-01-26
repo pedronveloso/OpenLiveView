@@ -2,6 +2,8 @@ package com.pedronveloso.openliveview.protocol;
 
 import java.io.UnsupportedEncodingException;
 
+import com.pedronveloso.openliveview.Utils.Constants;
+
 import android.graphics.Color;
 import com.pedronveloso.openliveview.Utils.Constants;
 

@@ -1,15 +1,22 @@
 package com.pedronveloso.openliveview.protocol;
 
-import com.pedronveloso.openliveview.Utils.Constants;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class StandByResponse extends Request {
+import com.pedronveloso.openliveview.Utils.Constants;
 
+public class AckMessage extends Request {
+
+	private byte mAckMessage;	
+	
+	public AckMessage(byte ackMessage) {
+		mAckMessage = ackMessage;
+	}
+	
 	@Override
 	protected byte getMessageId() {
-		return Constants.RESPONSE_STANDBY;
+		// TODO Auto-generated method stub
+		return Constants.RESPONSE_ACK;
 	}
 
 	@Override
@@ -19,7 +26,8 @@ public class StandByResponse extends Request {
 
 	@Override
 	protected void WritePayload(DataOutputStream writer) throws IOException {
-		writer.writeByte(Constants.MSG_OK);
+		writer.writeByte(mAckMessage);
+		
 	}
 
 }
