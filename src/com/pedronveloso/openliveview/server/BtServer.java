@@ -42,8 +42,7 @@ public class BtServer {
 	public void start(BluetoothDevice liveView) {
 		if (isReady())
 			stop();
-        BluetoothDevice mLiveView = liveView;
-		ConnectThread ct = new ConnectThread(mLiveView);
+        ConnectThread ct = new ConnectThread(liveView);
 		ct.start();
 	}
 	
@@ -61,6 +60,14 @@ public class BtServer {
 	}
 	
 	public boolean isReady() {
+        if (Constants.VERBOSE_LOGCAT){
+            if (mSocket==null)
+                Log.e(Constants.LOG_TAG,"isReady will fail because mSocket is NULL");
+            if (mOutput==null)
+                            Log.e(Constants.LOG_TAG,"isReady will fail because mOutput is NULL");
+            if (mThread==null)
+                            Log.e(Constants.LOG_TAG,"isReady will fail because mThread is NULL");
+        }
 		return mSocket != null && mOutput != null && mThread != null;
 	}
 	
@@ -94,7 +101,10 @@ public class BtServer {
 			return false;
 		}
 	}
-	
+
+    /**
+     * Running Thread that handles the I/O with a connected device
+     */
 	private class ConnectedThread extends Thread {
 		private DataInputStream mInput;
 		
@@ -152,7 +162,10 @@ public class BtServer {
 			}
 		}
 	}
-	
+
+    /**
+     * Thread responsible for handling the effective connection to the device
+     */
 	private class ConnectThread extends Thread {
 		
         public ConnectThread(BluetoothDevice device) {
@@ -180,9 +193,7 @@ public class BtServer {
                 // Unable to connect; close the socket and get out
                 try {
                     mSocket.close();
-                } catch (IOException closeException) {
-                }
-                return;
+                } catch (IOException ignored) { }
             }
         }
     }

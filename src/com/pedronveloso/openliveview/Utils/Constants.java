@@ -5,6 +5,9 @@ public interface Constants {
     public static String LOG_TAG = "OpenLV";
     
     public static String LIVEVIEW_UUID = "00001101-0000-1000-8000-00805F9B34FB";
+
+    // make this false when we don't need verbose logcat output anymore
+    public static boolean VERBOSE_LOGCAT = true;
     
     // Command Success Codes
     public static int SC_SUCCESS = 1;
