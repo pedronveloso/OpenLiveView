@@ -106,7 +106,7 @@ public class MainActivity extends Activity
 		} else if (aResponse instanceof SWVersionResponse) {
 			addToOutput("SW Version: "+((SWVersionResponse)aResponse).getVersion());
 		} else if (aResponse instanceof UnknownResponse) {
-			addToOutput("Unknown Response: "+((UnknownResponse)aResponse).getMsgId());
+			addToOutput("Unknown Response: "+(aResponse).getMsgId());
 		} else
 			addToOutput("handling: "+ aResponse.getClass().getSimpleName());
 	}
