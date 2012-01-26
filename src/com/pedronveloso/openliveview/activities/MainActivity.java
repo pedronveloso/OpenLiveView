@@ -88,6 +88,8 @@ public class MainActivity extends Activity
         	BtServer.instance().setContext(this);
         	BtServer.instance().setCallback(this);
         	BtServer.instance().start(liveView);        	        	
+        }else{
+            addToOutput("Failed to obtain liveview device.");
         }
 
     }
@@ -117,14 +119,15 @@ public class MainActivity extends Activity
     	super.onDestroy();
     }
 
-	public void onClick(View arg0) {
-		int id = arg0.getId();
-		if (id == R.id.btnVibrate) {
-			BtServer.instance().write(new VibrateRequest((short)0, (short)500));
-		} else if (id == R.id.btnLED) {
-			BtServer.instance().write(new LEDRequest(Color.RED, (short)0, (short)500));
-		}
-		
+	public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnVibrate:
+                BtServer.instance().write(new VibrateRequest((short)0, (short)500));
+                break;
+            case R.id.btnLED:
+                BtServer.instance().write(new LEDRequest(Color.RED, (short)0, (short)500));
+                break;
+        }
 	}
 
 

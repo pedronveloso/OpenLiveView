@@ -18,15 +18,6 @@ public class Utils {
 		}
 	}
 	
-	public static byte[] prepareString(String string) {
-		try {
-			return string.getBytes(Constants.STRING_ENCODING);
-		} catch (UnsupportedEncodingException e) {			
-			e.printStackTrace();
-			return new byte[0];
-		}
-	}
-	
 	public static short colorToRGB565(int color) {
 		int r = Color.red(color) >> 3;
 		int g = Color.green(color) >> 2;
