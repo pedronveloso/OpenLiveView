@@ -1,5 +1,7 @@
 package com.pedronveloso.openliveview.protocol;
 
+import android.util.Log;
+
 import com.pedronveloso.openliveview.Utils.Constants;
 
 import java.io.DataInputStream;
@@ -13,6 +15,7 @@ public abstract class Response {
 	
 	public static Response parse(byte msgId, DataInputStream input) throws IOException {
 		Response result = null;
+		Log.d(Constants.LOG_TAG, "Got message id:"+msgId);
 		int lengthSize = (byte)input.readByte();
 		int payloadlength = 0;
 		switch(lengthSize) {
@@ -22,8 +25,12 @@ public abstract class Response {
 				payloadlength = input.readShort(); break;
 			case Constants.SIZE_INT:
 				payloadlength = input.readInt(); break;
-			default:
+			case 0:
+				payloadlength = 0; break;
+			default: {
+				Log.d(Constants.LOG_TAG, "unknown message length: "+lengthSize);
 				return null; // Unknown Datatype!
+			}
 		}
 		
 		switch(msgId) {

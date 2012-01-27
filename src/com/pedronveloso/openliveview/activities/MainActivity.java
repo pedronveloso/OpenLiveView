@@ -11,11 +11,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.Set;
 
 import com.pedronveloso.openliveview.R;
 import com.pedronveloso.openliveview.Utils.Constants;
+import com.pedronveloso.openliveview.Utils.StaticImages;
 import com.pedronveloso.openliveview.protocol.*;
 import com.pedronveloso.openliveview.server.BtServer;
 
@@ -43,6 +46,17 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+		try {
+			InputStream is = getAssets().open("test36.png");
+			StaticImages.staticIconAllEvents = new byte[is.available()];
+			is.read(StaticImages.staticIconAllEvents);
+			is.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+        
         
         setContentView(R.layout.main);
 
@@ -109,6 +123,12 @@ public class MainActivity extends Activity
 			addToOutput("SW Version: "+((SWVersionResponse)aResponse).getVersion());
 		} else if (aResponse instanceof UnknownResponse) {
 			addToOutput("Unknown Response: "+(aResponse).getMsgId());
+		} else if (aResponse instanceof GetAllMenuItemsRequest) {
+			addToOutput("sending menu items!");
+			for (int i = 0; i < 4; i++) {
+				Request request = new GetMenuIconResponse(true, i, (short)i, "Icon "+ i , StaticImages.staticIconAllEvents);
+				BtServer.instance().write(request);
+			}			
 		} else
 			addToOutput("handling: "+ aResponse.getClass().getSimpleName());
 	}

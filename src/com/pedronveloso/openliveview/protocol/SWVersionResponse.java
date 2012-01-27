@@ -22,6 +22,6 @@ public class SWVersionResponse extends LiveViewRequest {
 
 	@Override
 	public Request answer() {
-		return new MenuItemCountRequest(1);
+		return new MenuItemCountRequest(4);
 	}
 }

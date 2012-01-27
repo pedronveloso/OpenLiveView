@@ -128,7 +128,8 @@ public class BtServer {
 	        		int msgId = mInput.read();
 	        		if (msgId != -1) {
 	        			final Response resp = Response.parse((byte)msgId, mInput);
-	        			
+	        			if (resp == null)
+	        				continue;
 	        			if (resp.shouldSendAck()) {
 	        				AckMessage ack = new AckMessage(resp.getMsgId());
 	        				write(ack);
