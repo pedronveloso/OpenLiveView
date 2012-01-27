@@ -2,10 +2,12 @@ This project's goal is to become a complete open source replacement of the LiveV
 
 WHAT WORKS:
      * Connecting to the LiveView device via Bluetooth
-     * Very raw handling of the basic protocol stack: Vibrate, Led, StandBy, Screen Properties
+     * Raw handling of the basic protocol stack: Vibrate, Led, StandBy, Screen Properties,
+        Date and Time, Protocol Version, Firmware Version,
+     * Basic stacking of commands
 
 WHAT REMAINS TO BE DONE:
-    * Better connection handling, PNGs NDK lib, stack of commands, menus, plugins support, YOU NAME IT ...
+    * Better connection handling, PNGs NDK lib, menus, plugins support, theming support, YOU NAME IT ...
 
 CREDITS
 
