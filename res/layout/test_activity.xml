@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:paddingTop="5dip"
+              android:paddingBottom="5dip"
+              android:background="#306020"
+              android:textStyle="bold"
+              android:text="@string/swipe"/>
+
+    <android.support.v4.view.ViewPager
+            android:layout_marginTop="4dip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/testactivitypager"/>
+
+</LinearLayout>

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OpenLiveView</string>
+
+    <!--Development Activity -->
     <string name="swipe">Swipe Left and Right for more options</string>
+    <string name="test_notice">The actions below will become available once the connection with
+        the device has been set, and the device is in \'Ready\' state</string>
+    <string name="test_vibrate">Vibrate</string>
+    <string name="test_led_red">LED Red</string>
+    <string name="test_led_blue">LED Blue</string>
+    <string name="test_led_green">LED Green</string>
+
 </resources>
