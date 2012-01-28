@@ -3,10 +3,12 @@ package com.pedronveloso.openliveview.server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import android.util.Log;
 import com.pedronveloso.openliveview.Utils.Constants;
+import com.pedronveloso.openliveview.Utils.Utils;
 import com.pedronveloso.openliveview.protocol.*;
 
 import android.bluetooth.BluetoothDevice;
@@ -23,7 +25,7 @@ public class BtServer {
 	
 	private Handler mHandler = new Handler();
 	
-	private Callback mCallback = null;
+	private List<Callback> mCallbacks = new ArrayList<Callback>();
     private BluetoothSocket mSocket = null;
 	private DataOutputStream mOutput = null;
 	private ConnectedThread mThread = null;
@@ -48,8 +50,8 @@ public class BtServer {
 	
 	public void stop() {
 		mThread = null;
-		if (mCallback != null)
-			mCallback.isReadyChanged(isReady());
+		for (Callback c : mCallbacks)
+			c.isReadyChanged(isReady());
 		if (mSocket != null) {
 			try {
 				mSocket.close();
@@ -62,17 +64,21 @@ public class BtServer {
 	public boolean isReady() {
         if (Constants.VERBOSE_LOGCAT){
             if (mSocket==null)
-                Log.e(Constants.LOG_TAG,"isReady will fail because mSocket is NULL");
+                Utils.log("isReady will fail because mSocket is NULL");
             if (mOutput==null)
-                            Log.e(Constants.LOG_TAG,"isReady will fail because mOutput is NULL");
+            	Utils.log("isReady will fail because mOutput is NULL");
             if (mThread==null)
-                            Log.e(Constants.LOG_TAG,"isReady will fail because mThread is NULL");
+            	Utils.log("isReady will fail because mThread is NULL");
         }
 		return mSocket != null && mOutput != null && mThread != null;
 	}
 	
-	public void setCallback(Callback callback) {
-		mCallback = callback;
+	public void addCallback(Callback callback) {
+		mCallbacks.add(callback);		
+	}
+	
+	public void removeCallback(Callback callback) {
+		mCallbacks.remove(callback);
 	}
 	
 	public void setContext(Context context) {
@@ -83,10 +89,10 @@ public class BtServer {
 		return mContext;
 	}
 	
-	
 	private void HandleResponse(Response response) {
-		if (mCallback != null && response != null) {
-			mCallback.handleResponse(response);
+		if (response != null) {
+			for (Callback c : mCallbacks)
+				c.handleResponse(response);
 		}
 	}
 	
@@ -118,8 +124,8 @@ public class BtServer {
 			mHandler.post(new Runnable() {
 				
 				public void run() {
-					if (mCallback != null)
-						mCallback.isReadyChanged(isReady());
+					for (Callback c : mCallbacks)
+						c.isReadyChanged(isReady());
 				}
 			});
 			
@@ -157,7 +163,7 @@ public class BtServer {
 	                break;
 	            } catch (NullPointerException nullE){
                     // ignore?
-                    Log.e(Constants.LOG_TAG,"Null exception when trying to read response: "+nullE.getMessage());
+                    Utils.log("Null exception when trying to read response: "+nullE.getMessage());
                     nullE.printStackTrace();
                 }
 			}
@@ -182,6 +188,10 @@ public class BtServer {
         public void run() {
             // Cancel discovery because it will slow down the connection
             try {
+            	// Make sure the state manager is registered.
+            	if (!mCallbacks.contains(StateManager.instance()))
+            		addCallback(StateManager.instance());
+            	
                 // Connect the device through the socket. This will block
                 // until it succeeds or throws an exception
                 mSocket.connect();
