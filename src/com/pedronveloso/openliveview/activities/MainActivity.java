@@ -25,6 +25,7 @@ import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.Utils.StaticImages;
 import com.pedronveloso.openliveview.protocol.*;
 import com.pedronveloso.openliveview.server.BtServer;
+import com.pedronveloso.openliveview.server.Menu;
 
 public class MainActivity extends Activity
                           implements BtServer.Callback, OnClickListener
@@ -61,7 +62,7 @@ public class MainActivity extends Activity
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-        
+        Menu.instance().initDefaultItems();
         
         setContentView(R.layout.test_activity);
 
@@ -70,9 +71,6 @@ public class MainActivity extends Activity
         myPager.setAdapter(adapter);
         myPager.setCurrentItem(0);
 
-
-
-        
 
     }
 
@@ -93,18 +91,13 @@ public class MainActivity extends Activity
 			addToOutput("SW Version: "+((SWVersionResponse)aResponse).getVersion());
 		} else if (aResponse instanceof UnknownResponse) {
 			addToOutput("Unknown Response: "+(aResponse).getMsgId());
-		} else if (aResponse instanceof GetAllMenuItemsRequest) {
-			addToOutput("sending menu items!");
-			for (int i = 0; i < 4; i++) {
-				Request request = new GetMenuIconResponse(true, i, (short)i, "Icon "+ i , StaticImages.staticIconAllEvents);
-				BtServer.instance().write(request);
-			}			
 		} else
 			addToOutput("handling: "+ aResponse.getClass().getSimpleName());
 	}
 
     @Override
     protected void onDestroy() {
+    	BtServer.instance().removeCallback(this);
     	BtServer.instance().stop();
     	super.onDestroy();
     }
@@ -200,6 +193,7 @@ public class MainActivity extends Activity
             finish();
         }
 
+
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         BluetoothDevice liveView = null;
         // If there are paired devices
@@ -216,8 +210,8 @@ public class MainActivity extends Activity
 
         if (liveView != null) {
             BtServer.instance().setContext(this);
-            BtServer.instance().setCallback(this);
-            BtServer.instance().start(liveView);        	        	
+            BtServer.instance().addCallback(this);
+            BtServer.instance().start(liveView);
         }else{
             addToOutput("Failed to obtain liveview device.");
         }

@@ -3,9 +3,17 @@ package com.pedronveloso.openliveview.Utils;
 import java.io.UnsupportedEncodingException;
 
 import android.graphics.Color;
+import android.util.Log;
 
 public class Utils {
 
+	public static boolean enableLogging = true;
+	
+	public static void log(String msg) {
+		if (enableLogging)
+			Log.d(Constants.LOG_TAG, msg);
+	}
+	
 	public static String getString(byte[] bytes) {
 		try {
 			return new String(bytes, Constants.STRING_ENCODING);

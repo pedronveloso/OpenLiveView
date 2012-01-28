@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import com.pedronveloso.openliveview.Utils.Utils;
+import com.pedronveloso.openliveview.server.Menu;
 
 public class SWVersionResponse extends LiveViewRequest {
 
@@ -22,6 +23,6 @@ public class SWVersionResponse extends LiveViewRequest {
 
 	@Override
 	public Request answer() {
-		return new MenuItemCountRequest(4);
+		return new MenuItemCountRequest(Menu.instance().size());
 	}
 }
