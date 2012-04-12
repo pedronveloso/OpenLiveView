@@ -30,4 +30,5 @@ This project is maintained by:
 ## Special thanks to ##
 
 * archivator for initiate the project and reverse reverse engineering effort
+* AJ256 for firmware reserve engineering effort
 * x942
