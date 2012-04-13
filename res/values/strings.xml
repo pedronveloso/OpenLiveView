@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OpenLiveView</string>
+    <string name="app_name">Open LiveView</string>
 
     <!--Development Activity -->
     <string name="swipe">Swipe Left and Right for more options</string>
@@ -10,5 +10,17 @@
     <string name="test_led_red">LED Red</string>
     <string name="test_led_blue">LED Blue</string>
     <string name="test_led_green">LED Green</string>
+
+    <string name="welcome_text">Welcome to Open LiveView</string>
+    <string name="welcome_text_description">Open LiveView (for short OLV) is an OpenSource application
+        with the purpose of providing a true OpenSource application stack for the interaction between a LiveView device
+        and an Android device via Bluetooth and improve the communication and usability between the two.
+        Open LiveView is made available under the Apache License, Version 2.0 . If you wish to learn more about the Apache
+        license visit http://www.apache.org/licenses/LICENSE-2.0.html .\n This project is currently maintained by Pedro Veloso
+        ( pedronveloso@androidpt.com ) and Boombuler but you too are free to contribute in any way you can, if you wish
+        to do so visit https://github.com/pedronveloso/OpenLiveView for the project sources and related. You\'re also free
+        to join the conversation over that XDA Forum on LiveView here: http://forum.xda-developers.com/showthread.php?t=1422106
+    </string>
+    <string name="proceed">Proceed</string>
 
 </resources>
