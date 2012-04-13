@@ -33,8 +33,7 @@
                 android:layout_marginLeft="3dip"
                 android:layout_marginRight="3dip"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                />
+                android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_next"
@@ -46,6 +45,17 @@
             android:paddingLeft="40dip"
             android:paddingRight="40dip"
             android:text="@string/proceed" />
+
+        <Button
+            android:id="@+id/btn_next_dev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dip"
+            android:textStyle="bold"
+            android:textSize="18dip"
+            android:paddingLeft="40dip"
+            android:paddingRight="40dip"
+            android:text="@string/proceed_to_dev" />
 
 
     </LinearLayout>

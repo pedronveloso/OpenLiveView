@@ -22,5 +22,6 @@
         to join the conversation over that XDA Forum on LiveView here: http://forum.xda-developers.com/showthread.php?t=1422106
     </string>
     <string name="proceed">Proceed</string>
+    <string name="proceed_to_dev">Proceed to Dev</string>
 
 </resources>

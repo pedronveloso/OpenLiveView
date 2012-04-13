@@ -10,16 +10,26 @@ import com.pedronveloso.openliveview.R;
 /**
  * Author: Pedro Veloso
  */
-public class EntryActivity extends Activity {
+public class EntryActivity extends Activity implements View.OnClickListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry_screen);
-        Button banProceed = (Button) findViewById(R.id.btn_next);
-        banProceed.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                startActivity(new Intent(EntryActivity.this,MainActivity.class));
-            }
-        });
+        Button btnProceed = (Button) findViewById(R.id.btn_next);
+        btnProceed.setOnClickListener(this);
+        btnProceed = (Button) findViewById(R.id.btn_next_dev);
+        btnProceed.setOnClickListener(this);
+    }
+
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_next:
+                startActivity(new Intent(EntryActivity.this,UserMainActivity.class));
+                break;
+
+            case R.id.btn_next_dev:
+                startActivity(new Intent(EntryActivity.this,DevMainActivity.class));
+                break;
+        }
     }
 }

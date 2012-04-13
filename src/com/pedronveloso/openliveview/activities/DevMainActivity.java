@@ -14,12 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteOrder;
-import java.util.Set;
-
 import com.pedronveloso.openliveview.R;
 import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.Utils.StaticImages;
@@ -27,7 +21,12 @@ import com.pedronveloso.openliveview.protocol.*;
 import com.pedronveloso.openliveview.server.BtServer;
 import com.pedronveloso.openliveview.server.Menu;
 
-public class MainActivity extends Activity
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteOrder;
+import java.util.Set;
+
+public class DevMainActivity extends Activity
                           implements BtServer.Callback, OnClickListener
                           
 {
@@ -150,13 +149,13 @@ public class MainActivity extends Activity
                     }
                     if (position==1){
                         btnVibrate = (Button) view.findViewById(R.id.btn_test_vibrate);
-                        btnVibrate.setOnClickListener(MainActivity.this);
+                        btnVibrate.setOnClickListener(DevMainActivity.this);
                         btnLEDred = (Button) view.findViewById(R.id.btn_test_led_red);
-                        btnLEDred.setOnClickListener(MainActivity.this);
+                        btnLEDred.setOnClickListener(DevMainActivity.this);
                         btnLEDgreen = (Button) view.findViewById(R.id.btn_test_led_green);
-                        btnLEDgreen.setOnClickListener(MainActivity.this);
+                        btnLEDgreen.setOnClickListener(DevMainActivity.this);
                         btnLEDblue = (Button) view.findViewById(R.id.btn_test_led_blue);
-                        btnLEDblue.setOnClickListener(MainActivity.this);
+                        btnLEDblue.setOnClickListener(DevMainActivity.this);
 
                         //continue loading the app logic after UI has been instantiated
                         continueLoading();
