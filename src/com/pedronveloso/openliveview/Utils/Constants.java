@@ -50,4 +50,7 @@ public interface Constants {
     public static final byte RESPONSE_ACK = 44;
 	public static final byte REQUEST_SW_VERSION = 68;
 	public static final byte RESPONSE_SW_VERSION = 69;
+
+    // Intent EXTRAS
+    public static final String EXTRA_START_SERVICE = "EXTRA_START_SERVICE";
 }

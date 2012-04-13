@@ -1,18 +1,23 @@
 package com.pedronveloso.openliveview.Utils;
 
-import java.io.UnsupportedEncodingException;
-
 import android.graphics.Color;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
+
 public class Utils {
 
-	public static boolean enableLogging = true;
+	public static final boolean enableLogging = true;
 	
 	public static void log(String msg) {
 		if (enableLogging)
 			Log.d(Constants.LOG_TAG, msg);
 	}
+
+    public static void logError(String msg) {
+        //always log errors
+        Log.e(Constants.LOG_TAG, msg);
+    }
 	
 	public static String getString(byte[] bytes) {
 		try {

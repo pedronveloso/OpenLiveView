@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.pedronveloso.openliveview.R;
 import com.pedronveloso.openliveview.Utils.Constants;
 import com.pedronveloso.openliveview.Utils.StaticImages;
+import com.pedronveloso.openliveview.Utils.Utils;
 import com.pedronveloso.openliveview.protocol.*;
 import com.pedronveloso.openliveview.server.BtServer;
 import com.pedronveloso.openliveview.server.Menu;
@@ -60,6 +61,7 @@ public class DevMainActivity extends Activity
 			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+            Utils.logError("Could NOT create icon from Assets");
 		} 
         Menu.instance().initDefaultItems();
         
